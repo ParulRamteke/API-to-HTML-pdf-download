@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CONFIDENTIAL</title>
+</head>
+<body>
+    <table border="1" cellspacing="0" width="100%" id="main-table">
+        <thead>
+            <tr>
+                <th colspan="11" rowspan="4" style="text-align: center;">BEST AGROLIFE LIMITED</th>
+                <th colspan="8">Details as per Bank Account</th>
+            </tr>
+            <tr>
+                <th>Names</th>
+                <td colspan="8" style="text-align: center;"></td>
+            </tr>
+            <tr>
+                <th>Bank Name</th>
+                <td colspan="6" style="text-align: center;"></td>
+            </tr>
+            <tr>
+                <th>Bank Account Number</th>
+                <td colspan="6" style="text-align: center;"></td>
+            </tr>
+            <tr>
+                <th colspan="18" style="text-align: center;"><strong>FORTNIGHTLY TRAVELLING EXPENSES STATEMENT</strong></th>
+            </tr>
+            <tr>
+                <th colspan="2">Name</th>
+                <td colspan="8" style="text-align: center;"><%= employeeInfo.EMP_NAME %></td>
+                <th colspan="2">Employee ID</th>
+                <td colspan="8" style="text-align: center;"><%= employeeInfo.EMP_ID %></td>
+            </tr>
+            <tr>
+                <th colspan="2">Designation</th>
+                <td colspan="8" style="text-align: center;"><%= employeeInfo.EMP_DESG %></td>
+                <th colspan="2">Contact Number</th>
+                <td colspan="8" style="text-align: center;"></td>
+            </tr>
+            <tr>
+                <th colspan="2">Head Quarter</th>
+                <td colspan="8" style="text-align: center;"></td>
+                <th colspan="2">Vehicle Number</th>
+                <td colspan="8" style="text-align: center;"></td>
+            </tr>
+            <tr>
+                <th rowspan="2" style="width: 100px;">Date</th>
+                <th colspan="5">Particulars of Journey</th>
+                <th colspan="4">Travels Expenses</th>
+                <th colspan="7">Other Expenses</th>
+                <th rowspan="2">Total</th>
+            </tr>
+            <tr>
+                <th>From</th>
+                <th style="width: 50px;">To</th>
+                <th>Total Km</th>
+                <th>Fuel Charges Per</th>
+                <th>Total Fuel</th>
+                <th>Bus/Train</th>
+                <th>Taxi/Auto/Rickshaw</th>
+                <th>Air</th>
+                <th>Vehicle Repair</th>
+                <th>Hotel</th>
+                <th>Internet/Phone</th>
+                <th>Daily Allowance Local</th>
+                <th>Daily Allowance Outstation</th>
+                <th>Stationary</th>
+                <th>Postage/Courier</th>
+                <th>Misce</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% agrodata.forEach(record => { %>
+                <tr>
+                    <td style='text-align: center';><%= formatDate(record['CLAIM_DATE']) %></td>
+                    <td style='text-align: center';><%= record['START_KM'] %></td>
+                    <td style='text-align: center';><%= record['END_KM'] %></td>
+                    <td style='text-align: center';><%= calculateTotalKm(record['START_KM'], record['END_KM']) %></td>
+                    <td style='text-align: center';><%= record['EXP_PER_KM_RATE'] %></td>
+                    <td style='text-align: center';><%= record['EXP_FUEL'] %></td>
+                    <td style='text-align: center';><%= record['EXP_BUS_TRAIN'] %></td>
+                    <td style='text-align: center';><%= record['EXP_TAXI_AUTO'] %></td>
+                    <td style='text-align: center';><%= record['EXP_PLANE'] %></td>
+                    <td style='text-align: center';><%= record['EXP_VEH_REPAIR'] %></td>
+                    <td style='text-align: center';><%= record['EXP_HOTEL'] %></td>
+                    <td style='text-align: center';><%= record['EXP_MOBILE_INTERNET'] %></td>
+                    <td style="text-align: center; width: 100px;"><%= record['DA_RATES_LOCAL'] %></td>
+                    <td style='text-align: center';><%= record['DA_RATES_OUTST'] %></td>
+                    <td style='text-align: center';><%= record['EXP_STATIONARY'] %></td>
+                    <td></td>
+                    <td style='text-align: center';><%= record['EXP_MISC'] %></td>
+                    <td style='text-align: center';><%= record['TOTAL_CLAIMED_AMOUNT'] %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+        <tr>
+            <th colspan="5">Total</th>
+            <td style='text-align: center';>Rs.<%= columnTotals.totalExp %></td>
+            <td style='text-align: center';>Rs.<%= columnTotals.totalTrainBusFair %></td>
+            <td style='text-align: center';>Rs.<%= columnTotals.totalTaxiAutoFair %></td>
+            <td style='text-align: center';>Rs.<%= columnTotals.totalAirFair %></td>
+            <td style='text-align: center';>Rs.<%= columnTotals.totalvehiclerepair %></td>
+            <td style='text-align: center';>Rs.<%= columnTotals.totalHotelExp %></td>
+            <td style='text-align: center';>Rs.<%= columnTotals.totalmobileinternet %></td>
+            <td style='text-align: center';>Rs.<%= columnTotals.totalDAlocal %></td>
+            <td style='text-align: center';>Rs.<%= columnTotals.totalDAOut %></td>
+            <td style='text-align: center';>Rs.<%= columnTotals.totalExpStat %></td>
+            <td></td>
+            <td style='text-align: center';>Rs.<%= columnTotals.totalexpMISC %></td>
+            <td style='text-align: center';>Rs.<%= columnTotals.totalclaimedAmount %></td>
+        </tr>
+        <tr>
+            <th colspan="14" style="text-align: right;"> Grand Total</th>
+            <td colspan="4" style='text-align: center';>Rs. <%= grandTotal %></td>
+        </tr>
+        <tr>
+            <th colspan="14" style="text-align: right;">Rs. in Words</th>
+            <td colspan="4" style="text-align: center; font-weight: bold;">Rs. <%= grandTotalInWords.charAt(0).toUpperCase() + grandTotalInWords.slice(1) %></td>
+        </tr>
+        <tr>
+            <th colspan="3" rowspan="3">Average Petrol Consumption (Vehicle Km. per Ltr)</th>
+            <th colspan="2">Checked by</th>
+            <td colspan="3"></td>
+            <th colspan="2">Passed By</th>
+            <td colspan="3"></td>
+            <th colspan="2">Amount</th>
+            <td colspan="3"></td>
+        </tr>
+        <tr><th>Amount</th></tr>
+        <tr><th>Deduction if any</th></tr>
+    </table>
+</body>
+</html>
